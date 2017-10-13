@@ -1,5 +1,3 @@
-### kafka 问题排查：前期看JVM，后期确定是swap所致
- 
 kafka是Java应用，首先看JVM相关的两个参数设置$KAFKA_HEAP_OPTS 和 $KAFKA_JVM_PERFORMANCE_OPTS
 
 >`$KAFKA_HEAP_OPTS` 新老节点的具体区别是：
