@@ -104,7 +104,7 @@ Filename                                Type            Size    Used    Priority
 /dev/sda2                               partition       16383992        2680972 -1   
 - 看看都是谁在用swap？   
 top 然后按f 再按p 回车。
-![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Toubleshooting-JVM-SWAP/F77A4673-5F83-44A5-BC69-E202957340A4.png)
+![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Toubleshooting-JVM-SWAP/F77A4673-5F83-44A5-BC69-E202957340A4.png)   
 如上图其中一个java用了1.1g的swap   
 - 具体进程的维度看swap使用量   
 `cat /proc/$javapid/status`   
