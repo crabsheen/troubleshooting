@@ -33,7 +33,7 @@ bin/kafka-run-class.sh kafka.tools.SimpleConsumerShell --broker-list xxx:9092 --
 ```
 
 针对以上场景做数据包分析，具体见右边注释。
-![](/Users/huiyang/Downloads/kafka protocol.png)
+![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Request-Packet-Analysis-Tools/kafka protocol.png)
 
 关于交互协议强烈建议直接看说明文档 [https://cwiki.apache.org/confluence/display/KAFKA/A+Guide+To+The+Kafka+Protocol](https://cwiki.apache.org/confluence/display/KAFKA/A+Guide+To+The+Kafka+Protocol)
 
