@@ -277,7 +277,10 @@ FetchOffset=$2;
 ```
 
 上个例子大伙看下，观察到10几万20多万的落后，没有读到磁盘的行为。
+![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Request-Packet-Analysis-Tools/command.png?raw=true)
 
+下面捕捉到拉老数据的行为了。
+![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Request-Packet-Analysis-Tools/find.png?raw=true)
 
 ###总结
 该工具可以升级为实时分析当前各种请求类型（支持多种ApiKey及对应的数据字段解析）。
