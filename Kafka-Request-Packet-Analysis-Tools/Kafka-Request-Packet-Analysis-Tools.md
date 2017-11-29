@@ -279,7 +279,7 @@ FetchOffset=$2;
 上个例子大伙看下，观察到10几万20多万的落后，没有读到磁盘的行为。
 ![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Request-Packet-Analysis-Tools/command.png?raw=true)
 
-下面捕捉到拉老数据的行为了。
+下面捕捉到拉老数据的行为了，并且用`bin/kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --zookeeper blackstonezk1.service.mogujie.org:2181 --group funnel`是看不到的
 ![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Request-Packet-Analysis-Tools/find.png?raw=true)
 
 ###总结
