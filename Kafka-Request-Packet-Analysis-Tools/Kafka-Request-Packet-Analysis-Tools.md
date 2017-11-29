@@ -179,6 +179,9 @@ ff:ff:ff:ff:ff:ff:ff:ff    Time => int64    超时时间
 00:0d 代表Topic名字的长度大小，十六进制。
 ff:ff:ff:ff    ReplicaId => int32 
 00:35 代表整个数据包长度大小，十六进制。
+
+抓包分析基于kafka.tools.GetOffsetShell
+/home/data/kafka_2.9.2-0.8.2.2/bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list  10.50.*.*:9092 --offsets 2  --topic acm_expose_v1 --time -1
 ```
 
 ###总结
