@@ -157,7 +157,7 @@ $ sudo /usr/sbin/tshark -i bond0 -f "dst host 10.50.aaa.aaa and dst port 9092 an
 首先弄清楚需要哪些信息，这儿需要拿到具体Topic下具体Partition的最大Offset，OK，这里要用到Offset Request。
 参考[https://cwiki.apache.org/confluence/display/KAFKA/A+Guide+To+The+Kafka+Protocol#AGuideToTheKafkaProtocol-OffsetFetchRequest](https://cwiki.apache.org/confluence/display/KAFKA/A+Guide+To+The+Kafka+Protocol#AGuideToTheKafkaProtocol-OffsetFetchRequest)
 
-来，我们先看个API结构，这是V0版本的ListOffsetRequest。
+来，我们先看个API结构，这是V0版本的`ListOffsetRequest`。
 ```
 // v0
 ListOffsetRequest => ReplicaId [TopicName [Partition Time MaxNumberOfOffsets]]
@@ -190,7 +190,7 @@ acm_expose_v1:1:29432477585,29430971331
 
 ```
 
-再来，我们继续看协议结构，这是V0版本的OffsetResponse，即返回数据。
+再来，我们继续看协议结构，这是V0版本的`OffsetResponse`，即返回数据。
 
 ```
 // v0
@@ -205,8 +205,7 @@ OffsetResponse => [TopicName [PartitionOffsets]]
 $ (echo -ne "\x00\x00\x00\x35\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x01\x00\x0d\x61\x63\x6d\x5f\x65\x78\x70\x6f\x73\x65\x5f\x76\x31\x00\x00\x00\x01\x00\x00\x00\x0b\xff\xff\xff\xff\xff\xff\xff\xff\x00\x00\x00\x01";sleep 1)|nc 10.50.x.x 9092|xxd -p -c 1024
 0000002d0000000000000001000d61636d5f6578706f73655f7631000000010000000b000000000001000000009380f1e7 
 
-返回结果里，000000009380f1e7 这里是int64的offset值，转化成十进制就很直观了。
-
+返回结果的最后int64长度的000000009380f1e7就是所谓的offset值，转化成十进制就很直观了。
 
 ```
 
