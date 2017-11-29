@@ -1,4 +1,4 @@
-### Kafka Request Packet Analysis Tools --------Base on V0.8.2.2
+### Kafka Request Packet Analysis Tools -------- Base on V0.8.2.2
   
 **最初出发点是为了找到谁在消费磁盘的哪些冷数据。**
 
@@ -209,6 +209,74 @@ $ (echo -ne "\x00\x00\x00\x35\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\xf
 
 ```
 
+好了，下面上新代码，在前者基础上改的。
+```
+具体的理解可以看注释。
+$ cat kafka.awk.new
+        #covert hex to string
+        function hex2str(n)
+        {
+                s = "";
+                for(i=1; i<=length(n)-1; i+=2)
+                s = s sprintf("%c", strtonum("0x" substr(n, i, 2)));
+                return s
+        }
+
+        function get_last_offset(packet,FetchOffset)
+        {
+                ##调用system执行系统命令
+                system("/home/duwei/Lag.sh "packet" "FetchOffset"");
+        }
+
+        {
+                #Get FetchRequest data
+                FetchRequest=substr($2,29,length($2)-28-7-16-8-8);
+
+                #Split FetchRequest data into Array,"ffffff" is ReplicaID
+                split(FetchRequest,Array,"ffffffff");
+
+                #client IP
+                printf $1;
+
+                #FetchOffset    strtonum():Examine str and return its numeric value.
+                FetchOffset = sprintf("%d",strtonum("0x"substr($2,length($2)-7-16,16)));
+                printf("\tFetchOffset:%d",FetchOffset);
+
+                #Partition
+                #printf("\tPartition:%d",strtonum("0x"substr($2,length($2)-7-16-8,8)));
+
+                #TopicName
+                printf("\tTopicName:%-50s",hex2str(substr(Array[2],29))"-"strtonum("0x"substr($2,length($2)-7-16-8,8)));
+
+                ##这儿想构造一个请求offset的数据包,主要是固定格式+Topicname,固定40字节,Topicname可以换算下,下面几个格式化的代表数据长度,topic长度十六进制,topic内容的十六进制.
+                ##substr($2,length($2)-7-16-8,8) 是分区ID
+                ##length(hex2str(substr(Array[2],29)))+40 是请求数据包内容长度
+                ##length(hex2str(substr(Array[2],29))) 是topic的长度
+                ##substr(Array[2],29) 是topic的十六进制文本
+                ##sprintf 赋值.
+                packet = sprintf("0000%04x00020000000000000000ffffffff00000001%04x%s0000001"substr($2,length($2)-7-16-8,8)"ffffffffffffffff00000001",length(hex2str(substr(Array[2],29)))+40,length(hex2str(substr(Array[2],29))),substr(Array[2],29));
+                get_last_offset(packet,FetchOffset);
+
+                #MaxBytes,MaxWaitTime,ClientId
+                #print "\tMaxBytes:"substr($2,length($2)-7) "\tMaxWaitTime:"substr(Array[2],0,8) "\tClientId:"hex2str(Array[1])
+                print "\tClientId:"hex2str(Array[1])
+        }
+```
+
+```
+该脚本主要用于获取某topic下指定分区的最大offset值 然后再计算一个Lag，快速定位是谁在落后。这个东西最好的地方在于无论是否low high level都一览无遗。
+$ cat Lag.sh 
+#!/bin/bash
+
+#LogSize - FetchOffset equals Lag
+
+FetchRequest=`echo "$1"|sed 's/../\\\x&/g'`;
+FetchOffset=$2;
+
+(echo -ne "$FetchRequest";sleep 0.1)|nc localhost 9092|xxd -p -c 102400|awk -v FetchOffset="$FetchOffset" '{printf("LogSize:%d\tLag:%-10d",strtonum("0x"substr($0,length($0)-15,16)),strtonum("0x"substr($0,length($0)-15,16))-FetchOffset)}';
+```
+
+上个例子大伙看下
 
 
 ###总结
