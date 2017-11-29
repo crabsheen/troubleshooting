@@ -182,6 +182,9 @@ ff:ff:ff:ff    ReplicaId => int32
 
 抓包分析基于kafka.tools.GetOffsetShell
 /home/data/kafka_2.9.2-0.8.2.2/bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list  10.50.*.*:9092 --offsets 2  --topic acm_expose_v1 --time -1
+
+顺带扩展说一下这个工具吧，这工具有2个事要做，1是获取Topic的分区分布信息，2是根据获取到的信息分别对不同分区所在server请求offset。
+
 ```
 
 ###总结
