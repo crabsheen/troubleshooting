@@ -167,6 +167,19 @@ ListOffsetRequest => ReplicaId [TopicName [Partition Time MaxNumberOfOffsets]]
   Time => int64
   MaxNumberOfOffsets => int32
 ```
+来实地分析一下包
+![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Request-Packet-Analysis-Tools/171129_75495fl4957dchh2igb98dlab60fe_2542x266.png?raw=true)
+
+```
+看最后一行 从后面往前看
+00:00:00:80    MaxNumberOfOffsets => int32    最大请求offset数量，就是输出最后面的多少数量的offset
+ff:ff:ff:ff:ff:ff:ff:ff    Time => int64    超时时间
+00:00:00:0a    Partition => int32    分区ID
+61:63:6d:5f:65:78:70:6f:73:65:5f:76:31    TopicName => string    Topic名字
+00:0d 代表Topic名字的长度大小，十六进制。
+ff:ff:ff:ff    ReplicaId => int32 
+00:35 代表整个数据包长度大小，十六进制。
+```
 
 ###总结
 该工具可以升级为实时分析当前各种请求类型（支持多种ApiKey及对应的数据字段解析）。
