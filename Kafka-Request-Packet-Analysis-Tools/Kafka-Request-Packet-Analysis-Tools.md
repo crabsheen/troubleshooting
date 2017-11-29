@@ -276,7 +276,7 @@ FetchOffset=$2;
 (echo -ne "$FetchRequest";sleep 0.1)|nc localhost 9092|xxd -p -c 102400|awk -v FetchOffset="$FetchOffset" '{printf("LogSize:%d\tLag:%-10d",strtonum("0x"substr($0,length($0)-15,16)),strtonum("0x"substr($0,length($0)-15,16))-FetchOffset)}';
 ```
 
-上个例子大伙看下
+上个例子大伙看下，观察到10几万20多万的落后，没有读到磁盘的行为。
 
 
 ###总结
