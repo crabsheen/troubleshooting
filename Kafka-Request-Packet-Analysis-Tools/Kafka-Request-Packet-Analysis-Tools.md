@@ -156,6 +156,7 @@ $ sudo /usr/sbin/tshark -i bond0 -f "dst host 10.50.aaa.aaa and dst port 9092 an
 
 首先弄清楚需要哪些信息，这儿需要拿到具体Topic下具体Partition的最大Offset，OK，这里要用到Offset Request。
 参考[https://cwiki.apache.org/confluence/display/KAFKA/A+Guide+To+The+Kafka+Protocol#AGuideToTheKafkaProtocol-OffsetFetchRequest](https://cwiki.apache.org/confluence/display/KAFKA/A+Guide+To+The+Kafka+Protocol#AGuideToTheKafkaProtocol-OffsetFetchRequest)
+
 来，我们先看个API结构，这是V0的格式。
 ```
 // v0
