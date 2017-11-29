@@ -102,7 +102,7 @@ ReplicaFetcherThread
 
 ```
 写了段awk来完成它，主要是针对 字符串 和 进制转换的操作，只要搞清楚请求体结构就行。
-$ cat kafka.awk 
+cat kafka.awk
         #covert hex to string
         function hex2str(n)
         {
@@ -126,15 +126,16 @@ $ cat kafka.awk
                 printf("\tFetchOffset:%d",strtonum("0x"substr($2,length($2)-7-16,16)));
 
                 #Partition
-                printf("\tPartition:%d",strtonum("0x"substr($2,length($2)-7-16-8,8)));
+                #printf("\tPartition:%d",strtonum("0x"substr($2,length($2)-7-16-8,8)));
 
                 #TopicName
-                printf("\tTopicName:%-50s",hex2str(substr(Array[2],29)));
+                printf("\tTopicName:%-50s",hex2str(substr(Array[2],29))"-"strtonum("0x"substr($2,length($2)-7-16-8,8)));
 
                 #MaxBytes,MaxWaitTime,ClientId
                 #print "\tMaxBytes:"substr($2,length($2)-7) "\tMaxWaitTime:"substr(Array[2],0,8) "\tClientId:"hex2str(Array[1])
                 print "\tClientId:"hex2str(Array[1])
         }
+
 
 我们来运行一下:
 [duwei@xxxx /home/duwei]
