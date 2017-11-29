@@ -181,9 +181,11 @@ ff:ff:ff:ff    ReplicaId => int32
 00:35 代表整个数据包长度大小，十六进制。
 
 抓包分析基于kafka.tools.GetOffsetShell
+
 /home/data/kafka_2.9.2-0.8.2.2/bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list  10.50.*.*:9092 --offsets 2  --topic acm_expose_v1 --time -1
 acm_expose_v1:0:29432412164,29430988440
 acm_expose_v1:1:29432477585,29430971331
+
 顺带扩展说一下这个工具吧，这工具有3个事要做，1是获取Topic的分区分布信息，2是根据获取到的信息分别对不同分区所在server发起请求offset，3汇总这些数据病展示。
 
 ```
