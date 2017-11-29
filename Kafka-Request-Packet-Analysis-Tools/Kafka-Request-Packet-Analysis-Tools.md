@@ -157,7 +157,7 @@ $ sudo /usr/sbin/tshark -i bond0 -f "dst host 10.50.aaa.aaa and dst port 9092 an
 首先弄清楚需要哪些信息，这儿需要拿到具体Topic下具体Partition的最大Offset，OK，这里要用到Offset Request。
 参考[https://cwiki.apache.org/confluence/display/KAFKA/A+Guide+To+The+Kafka+Protocol#AGuideToTheKafkaProtocol-OffsetFetchRequest](https://cwiki.apache.org/confluence/display/KAFKA/A+Guide+To+The+Kafka+Protocol#AGuideToTheKafkaProtocol-OffsetFetchRequest)
 
-来，我们先看个API结构，这是V0的格式。
+来，我们先看个API结构，这是V0版本的ListOffsetRequest。
 ```
 // v0
 ListOffsetRequest => ReplicaId [TopicName [Partition Time MaxNumberOfOffsets]]
@@ -189,6 +189,28 @@ acm_expose_v1:1:29432477585,29430971331
 顺带扩展说一下这个工具吧，这工具有3个事要做，1是获取Topic的分区分布信息，2是根据获取到的信息分别对不同分区所在server发起请求offset，3汇总这些数据病展示。
 
 ```
+
+再来，我们继续看协议结构，这是V0版本的OffsetResponse，即返回数据。
+
+```
+// v0
+OffsetResponse => [TopicName [PartitionOffsets]]
+  PartitionOffsets => Partition ErrorCode [Offset]
+  Partition => int32
+  ErrorCode => int16
+  Offset => int64
+  
+下面例子是构造ListOffsetRequest然后拿到该topic下该分区的offset信息。
+[duwei@xxxx /home/duwei] 17:55
+$ (echo -ne "\x00\x00\x00\x35\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x01\x00\x0d\x61\x63\x6d\x5f\x65\x78\x70\x6f\x73\x65\x5f\x76\x31\x00\x00\x00\x01\x00\x00\x00\x0b\xff\xff\xff\xff\xff\xff\xff\xff\x00\x00\x00\x01";sleep 1)|nc 10.50.x.x 9092|xxd -p -c 1024
+0000002d0000000000000001000d61636d5f6578706f73655f7631000000010000000b000000000001000000009380f1e7 
+
+返回结果里，000000009380f1e7 这里是int64的offset值，转化成十进制就很直观了。
+
+
+```
+
+
 
 ###总结
 该工具可以升级为实时分析当前各种请求类型（支持多种ApiKey及对应的数据字段解析）。
