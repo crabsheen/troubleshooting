@@ -147,7 +147,7 @@ $ sudo /usr/sbin/tshark -i bond0 -f "dst host 10.50.aaa.aaa and dst port 9092 an
 ```
 
 
-20171129 Update 对以上抓包分析增加Lag差值(获取具体Topic下具体Partition的Logsize然后做减法) 更容易判断是哪些ClientId落后更多。
+**20171129 Update 对以上抓包分析增加Lag差值(获取具体Topic下具体Partition的Logsize然后做减法) 更容易判断是哪些ClientId落后更多。**
 
 ###总结
 该工具可以升级为实时分析当前各种请求类型（支持多种ApiKey及对应的数据字段解析）。
