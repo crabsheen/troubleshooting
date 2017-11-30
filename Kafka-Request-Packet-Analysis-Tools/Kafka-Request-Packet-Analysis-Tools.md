@@ -278,6 +278,7 @@ FetchOffset=$2;
 
 上个例子大伙看下，观察到10几万20多万的落后，没有读到磁盘的行为。
 具体命令：
+
 `
 sudo /usr/sbin/tshark -i bond0 -f "dst host 10.50.x.x and dst port 9092 and tcp[36:4] == 0x00010000" -c 100 -n -T fields -e ip.src -e data -R "not data.data contains 52:65:70:6c:69:63:61:46:65:74:63:68:65:72:54:68:72:65:61:64" 2>/dev/null |awk -f /home/duwei/kafka.awk.new
 `
