@@ -116,8 +116,8 @@ cat kafka.awk
                 #Get FetchRequest data
                 FetchRequest=substr($2,29,length($2)-28-7-16-8-8);
 
-                #Split FetchRequest data into Array,"ffffff" is ReplicaID
-                split(FetchRequest,Array,"ffffffff");
+                #Split FetchRequest data into Array,"ffffff" is ReplicaID 代表-1 还看到个ffff fffe 代表-2
+                split(FetchRequest,Array,"fffffff[fe]");
 
                 #client ip
                 printf $1;
@@ -232,8 +232,8 @@ $ cat kafka.awk.new
                 #Get FetchRequest data
                 FetchRequest=substr($2,29,length($2)-28-7-16-8-8);
 
-                #Split FetchRequest data into Array,"ffffff" is ReplicaID
-                split(FetchRequest,Array,"ffffffff");
+                #Split FetchRequest data into Array,"ffffff" is ReplicaID 代表-1 还看到个ffff fffe 代表-2
+                split(FetchRequest,Array,"fffffff[fe]");
 
                 #client IP
                 printf $1;
