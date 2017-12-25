@@ -63,6 +63,7 @@ file.encoding = GB2312
 ```
 
 **Conclusion**
+
 when `LC_ALL` is empty,program get properties from `LC_CTYPE`.
 
 
