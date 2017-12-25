@@ -19,7 +19,7 @@ If the LANG environment variable is not set or is set to the empty string, the i
 
 ok，we do some test and verify.
 
-####set LC_ALL empty and see locale
+###set LC_ALL empty and see locale
 ```
 $ export LC_ALL=""
 
