@@ -18,7 +18,8 @@ If the LANG environment variable is not set or is set to the empty string, the i
 ```
 
 ok，we do some test and verify.
-#####set LC_ALL empty and see locale
+
+####set LC_ALL empty and see locale
 ```
 $ export LC_ALL=""
 
@@ -27,7 +28,7 @@ LANG=en_US.utf-8
 LC_CTYPE="en_US.utf-8"
 LC_ALL=
 ```
-#####then set LC_CTYPE value == zh\_CN.gb2312
+####then set LC_CTYPE value == zh\_CN.gb2312
 ```
 $ export LC_CTYPE="zh_CN.gb2312"
 
@@ -37,7 +38,7 @@ LANG=en_US.utf-8
 LC_CTYPE=zh_CN.gb2312
 LC_ALL=
 ```
-#####running test
+####running test
 ```
 public static void main(String[] args)
   {
@@ -61,7 +62,7 @@ $ jinfo -sysprops `pgrep -u duwei java` 2>/dev/null |grep 'file.encoding '
 file.encoding = GB2312
 ```
 
-#####Conclusion
+####Conclusion
 when `LC_ALL` is empty,program get properties from `LC_CTYPE`.
 
 
