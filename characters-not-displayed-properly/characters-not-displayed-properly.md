@@ -93,7 +93,6 @@ $ export CLASSPATH=.CLASSPATH;java getpro
 GBK zh_CN
 ```
 ***
-***
 ###此前在蘑菇街评价应用上遇到的乱码问题排查
 
 先看10.11.8.166上评价服务启动环境`cat /proc/$pid/environ` 或者直接看
