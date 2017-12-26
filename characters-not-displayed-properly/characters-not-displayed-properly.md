@@ -1,4 +1,4 @@
-### About characters-not-displayed-properly
+### About characters-not-displayed-properly|关于显示乱码的问题排查
 
 We run into problems when using `String.getBytes()` to convert String to Bytes in Java.
 
