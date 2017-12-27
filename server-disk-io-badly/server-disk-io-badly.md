@@ -18,7 +18,7 @@ There's my thinking and examine steps below.
 I try to run fio testing on sda(the raid1)，the result is ok,So rule out raid controller‘s problem. then doubt about may be some bad disk in sdb.
 (怀疑raid卡问题，然后对sda做测试，发现fio测试用例也是很稳定，排除raid卡问题。然而raid5结构的sdb就是始终抖动，所以怀疑是sdb内部个别磁盘问题，sdb是由10多块盘3TB规格磁盘组成。)
 
-3. Using `/opt/MegaRAID/MegaCli/MegaCli64 -PDList -aALL` to view detail info about all drivers.During the output i've find it's a little pause when display info about `slot number:7`.That's very important discovery.         
+3. **Using `/opt/MegaRAID/MegaCli/MegaCli64 -PDList -aALL` to view detail info about all drivers.During the output i've find it's a little pause when display info about `slot number:7`.That's very important discovery.  **       
 ![](https://camo.githubusercontent.com/ae7b14a7344e0ab8f63a4ae79ec0ee8087cc2096/687474703a2f2f73362e6d6f677563646e2e636f6d2f6e6577312f76312f66786968652f37373838313665613266313532646135626632306234663266386563313533372f4131616434303937353162323030303830322e706e67)        
 (继续跑fio测试然后用megacli64 -PDList -aALL去看看，这个指令是显示所有disk的详细信息,反复跑了几次观察下来，发现总是在展示slot number:7的时候有短暂的停顿，你看我都输入4个ffff了，所以开始怀疑这块盘有问题。)
 
