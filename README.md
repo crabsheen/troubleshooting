@@ -8,3 +8,6 @@
 [Find-server-uplink-switch 如何查找上联交换机](Find-server-uplink-switch/Find-server-uplink-switch.md)
 
 [characters-not-displayed-properly 乱码问题](characters-not-displayed-properly/characters-not-displayed-properly.md)
+
+[server-disk-io-badly 磁盘IO抖动问题](server-disk-io-badly/server-disk-io-badly.md)
+
