@@ -85,8 +85,8 @@ tcpdump -i bond0 dst port 9092 and tcp[36:4] == 0x00010000 -nn -A -w /tmp/kafka.
 ```  
 打印出client ip 和 具体的数据包，新增过滤条件是排除节点间的复制。
 tshark -r kafka.pcap -T fields -e ip.src -e data -R "not data.data contains 52:65:70:6c:69:63:61:46:65:74:63:68:65:72:54:68:72:65:61:64"
-10.50.aaa.bbb    000000480001000000129fd40002687affffffff0000006400000001000000010016687a2d707572652d61636d5f65746c5f6578706f7365000000010000000a000000001b4b2ea600100000
-10.50.aaa.ccc    0000005c000100000001f78a001f61645f7265616c74696d655f666561747572655f31302e31392e32322e3338ffffffff000000640000000100000001000d61636d5f6578706f73655f7631000000010000000b000000004266bb7800100000
+ccc.ddd.aaa.bbb    000000480001000000129fd40002687affffffff0000006400000001000000010016687a2d707572652d61636d5f65746c5f6578706f7365000000010000000a000000001b4b2ea600100000
+ccc.ddd.aaa.ccc    0000005c000100000001f78a001f61645f7265616c74696d655f666561747572655f31302e31392e32322e3338ffffffff000000640000000100000001000d61636d5f6578706f73655f7631000000010000000b000000004266bb7800100000
 
 为什么是52:65:70:6c:69:63:61:46:65:74:63:68:65:72:54:68:72:65:61:64？
 
@@ -139,10 +139,10 @@ cat kafka.awk
 
 我们来运行一下:
 [duwei@xxxx /home/duwei]
-$ sudo /usr/sbin/tshark -i bond0 -f "dst host 10.50.aaa.aaa and dst port 9092 and tcp[36:4] == 0x00010000" -c 100 -n -T fields -e ip.src -e data -R "not data.data contains 52:65:70:6c:69:63:61:46:65:74:63:68:65:72:54:68:72:65:61:64" 2>/dev/null |awk -f /home/duwei/kafka.awk
-10.50.aaa.bbb    FetchOffset:316216553   Partition:8     TopicName:mario_etl_network_s_v1                                ClientId:im_req_code
-10.50.ccc.bbb    FetchOffset:721772963   Partition:6     TopicName:mario_etl_network_n                                   ClientId:mdata_network_n_base_cql
-10.50.ddd.fff    FetchOffset:748096840   Partition:10    TopicName:mario_etl_mwp_http_network                            ClientId:im_mdata_biz_request_group       
+$ sudo /usr/sbin/tshark -i bond0 -f "dst host ccc.ddd.aaa.aaa and dst port 9092 and tcp[36:4] == 0x00010000" -c 100 -n -T fields -e ip.src -e data -R "not data.data contains 52:65:70:6c:69:63:61:46:65:74:63:68:65:72:54:68:72:65:61:64" 2>/dev/null |awk -f /home/duwei/kafka.awk
+ccc.ddd.aaa.bbb    FetchOffset:316216553   Partition:8     TopicName:mario_etl_network_s_v1                                ClientId:im_req_code
+ccc.ddd.ccc.bbb    FetchOffset:721772963   Partition:6     TopicName:mario_etl_network_n                                   ClientId:mdata_network_n_base_cql
+ccc.ddd.ddd.fff    FetchOffset:748096840   Partition:10    TopicName:mario_etl_mwp_http_network                            ClientId:im_mdata_biz_request_group       
         
 上面的例子是抓取数据包并实时分析，主要字段有来源IP，FetchOffset，Partition分区号，TopicName，ClientId
 ```
@@ -182,7 +182,7 @@ ff:ff:ff:ff    ReplicaId => int32
 
 抓包分析基于kafka.tools.GetOffsetShell
 
-/home/data/kafka_2.9.2-0.8.2.2/bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list  10.50.*.*:9092 --offsets 2  --topic acm_expose_v1 --time -1
+/home/data/kafka_2.9.2-0.8.2.2/bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list  *.*.*.*:9092 --offsets 2  --topic acm_expose_v1 --time -1
 acm_expose_v1:0:29432412164,29430988440
 acm_expose_v1:1:29432477585,29430971331
 
@@ -202,7 +202,7 @@ OffsetResponse => [TopicName [PartitionOffsets]]
   
 下面例子是构造ListOffsetRequest然后拿到该topic下该分区的offset信息。
 [duwei@xxxx /home/duwei] 17:55
-$ (echo -ne "\x00\x00\x00\x35\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x01\x00\x0d\x61\x63\x6d\x5f\x65\x78\x70\x6f\x73\x65\x5f\x76\x31\x00\x00\x00\x01\x00\x00\x00\x0b\xff\xff\xff\xff\xff\xff\xff\xff\x00\x00\x00\x01";sleep 1)|nc 10.50.x.x 9092|xxd -p -c 1024
+$ (echo -ne "\x00\x00\x00\x35\x00\x02\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\x00\x00\x00\x01\x00\x0d\x61\x63\x6d\x5f\x65\x78\x70\x6f\x73\x65\x5f\x76\x31\x00\x00\x00\x01\x00\x00\x00\x0b\xff\xff\xff\xff\xff\xff\xff\xff\x00\x00\x00\x01";sleep 1)|nc x.x.x.x 9092|xxd -p -c 1024
 0000002d0000000000000001000d61636d5f6578706f73655f7631000000010000000b000000000001000000009380f1e7 
 
 返回结果的最后int64长度的000000009380f1e7就是所谓的offset值，转化成十进制就很直观了。
@@ -280,11 +280,11 @@ FetchOffset=$2;
 具体命令：
 
 `
-sudo /usr/sbin/tshark -i bond0 -f "dst host 10.50.x.x and dst port 9092 and tcp[36:4] == 0x00010000" -c 100 -n -T fields -e ip.src -e data -R "not data.data contains 52:65:70:6c:69:63:61:46:65:74:63:68:65:72:54:68:72:65:61:64" 2>/dev/null |awk -f /home/duwei/kafka.awk.new
+sudo /usr/sbin/tshark -i bond0 -f "dst host x.x.x.x and dst port 9092 and tcp[36:4] == 0x00010000" -c 100 -n -T fields -e ip.src -e data -R "not data.data contains 52:65:70:6c:69:63:61:46:65:74:63:68:65:72:54:68:72:65:61:64" 2>/dev/null |awk -f /home/duwei/kafka.awk.new
 `
 ![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Request-Packet-Analysis-Tools/command.png?raw=true)
 
-下面捕捉到拉老数据的行为了，并且用`bin/kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --zookeeper blackstonezk1.service.mogujie.org:2181 --group funnel`是看不到的
+下面捕捉到拉老数据的行为了，并且用`bin/kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --zookeeper x.x.x.x:2181 --group funnel`是看不到的
 ![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Request-Packet-Analysis-Tools/find.png?raw=true)
 
 ###总结
