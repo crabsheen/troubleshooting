@@ -168,7 +168,7 @@ ListOffsetRequest => ReplicaId [TopicName [Partition Time MaxNumberOfOffsets]]
   MaxNumberOfOffsets => int32
 ```
 来实地分析一下包
-![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Request-Packet-Analysis-Tools/171129_75495fl4957dchh2igb98dlab60fe_2542x266.png?raw=true)
+![](https://github.com/crabsheen/troubleshooting/blob/master/Kafka-Request-Packet-Analysis-Tools/180123_85bb2ab3jkajl7kh1b7b6jja1cki6_2854x300.png?raw=true)
 
 ```
 看最后一行 从后面往前看
