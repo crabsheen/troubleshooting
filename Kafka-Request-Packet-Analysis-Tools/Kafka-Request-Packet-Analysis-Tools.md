@@ -285,7 +285,7 @@ sudo /usr/sbin/tshark -i bond0 -f "dst host x.x.x.x and dst port 9092 and tcp[36
 ![](https://raw.githubusercontent.com/crabsheen/troubleshooting/master/Kafka-Request-Packet-Analysis-Tools/command.png)
 
 下面捕捉到拉老数据的行为了，并且用`bin/kafka-run-class.sh kafka.tools.ConsumerOffsetChecker --zookeeper x.x.x.x:2181 --group funnel`是看不到的
-![](https://raw.githubusercontent.com/crabsheen/troubleshooting/master/Kafka-Request-Packet-Analysis-Tools/find.png)
+![](https://raw.githubusercontent.com/crabsheen/troubleshooting/master/Kafka-Request-Packet-Analysis-Tools/find1.png)
 
 ###总结
 该工具可以升级为实时分析当前各种请求类型（支持多种ApiKey及对应的数据字段解析）。
