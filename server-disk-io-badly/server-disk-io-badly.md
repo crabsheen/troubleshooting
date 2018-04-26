@@ -8,7 +8,7 @@ The result is really bad,from beginning,the read bandwidth started from 350M per
 
 (跑磁盘读写测试发现磁盘IO性能抖动非常厉害，一开始350M/s，10秒之后迅速降低到几十兆每秒。)
 
-There's my thinking and examine steps below.
+This is my thinking and examine steps below.
 
 1. compare with other server which has same hardware configuration(disk type,raid controller),and running same testing case above,the result is good,disk performance lasted stable.
 （对比相同硬件配置服务器(磁盘型号，raid卡)，跑同样的fio测试用例发现IO反应无异常，持续稳定。所以怀疑10.17.107.35这台服务器本身问题。）
